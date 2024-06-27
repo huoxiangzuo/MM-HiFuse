@@ -166,10 +166,10 @@ class main_model(nn.Module):
 
         ###### Hierachical Feature Fusion Block Setting #######
 
-        self.fu1 = HFF_block(ch_1=96, ch_2=96, r_2=16, ch_int=96, ch_out=96, drop_rate=0.)
-        self.fu2 = HFF_block(ch_1=192, ch_2=192, r_2=16, ch_int=192, ch_out=192, drop_rate=0.1)
-        self.fu3 = HFF_block(ch_1=384, ch_2=384, r_2=16, ch_int=384, ch_out=384, drop_rate=0.2)
-        self.fu4 = HFF_block(ch_1=768, ch_2=768, r_2=16, ch_int=768, ch_out=768, drop_rate=0.2)
+        self.fu1 = MHF_block(ch_1=96, ch_2=96, r_2=16, ch_int=96, ch_out=96, drop_rate=0.)
+        self.fu2 = MHF_block(ch_1=192, ch_2=192, r_2=16, ch_int=192, ch_out=192, drop_rate=0.1)
+        self.fu3 = MHF_block(ch_1=384, ch_2=384, r_2=16, ch_int=384, ch_out=384, drop_rate=0.2)
+        self.fu4 = MHF_block(ch_1=768, ch_2=768, r_2=16, ch_int=768, ch_out=768, drop_rate=0.2)
 
         # 创建分期任务头
         num_classes_stage = 4  # 分期任务的类别数  conv_dims[-1] --> 768
@@ -323,9 +323,9 @@ class Block(nn.Module):
         return x
 
 # Hierachical Feature Fusion Block
-class HFF_block(nn.Module):
+class MHF_block(nn.Module):
     def __init__(self, ch_1, ch_2, r_2, ch_int, ch_out, drop_rate=0.):
-        super(HFF_block, self).__init__()
+        super(MHF_block, self).__init__()
         self.maxpool=nn.AdaptiveMaxPool2d(1)
         self.avgpool=nn.AdaptiveAvgPool2d(1)
         self.se=nn.Sequential(
